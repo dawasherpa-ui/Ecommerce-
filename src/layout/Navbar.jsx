@@ -15,6 +15,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import StoreIcon from "@mui/icons-material/Store";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import WidgetsIcon from "@mui/icons-material/Widgets";
+import { Link } from "react-router-dom";
 export default function Navbar() {
   const [catOpen, setCatOpen] = useState(false);
   const [symbol, setSymbol] = useState(false);
@@ -30,8 +31,11 @@ export default function Navbar() {
         height: "80px",
         display: "flex",
         alignItems: "center",
+        position:"sticky",
+        top:"0px",
+        zIndex:"9999",
         justifyContent: "space-between",
-        bgcolor: "background.default",
+        bgcolor: "background.paper",
         px: 4,
       }}
     >
@@ -44,6 +48,7 @@ export default function Navbar() {
         }}
       >
         <Box sx={{ height: "70px" }}>
+          <Link to="/">
           <img
             src={Logo}
             style={{
@@ -52,20 +57,20 @@ export default function Navbar() {
               border: "2px solid gray",
             }}
             alt="RuzaBelle"
-          />
+          /></Link>
         </Box>
         <Box component="nav">
-          <List sx={{ display: "flex" }}>
+          <List sx={{ display: {xs:"none",md:"flex"} }}>
             <ListItem sx={{ p: 0 }}>
               <ListItemButton>
                 <HomeIcon sx={{ fontSize: "20px" }} />
-                Home
+                <Link style={{color:"black",textDecoration:"none"}} to="/">Home</Link>
               </ListItemButton>
             </ListItem>
             <ListItem sx={{ p: 0 }}>
               <ListItemButton>
                 <StoreIcon sx={{ fontSize: "20px" }} />
-                Shop
+                <Link style={{color:"black",textDecoration:"none"}} to="/shop">Shop</Link>
               </ListItemButton>
             </ListItem>
             <ListItem sx={{ p: 0 }}>
@@ -145,7 +150,7 @@ export default function Navbar() {
           </List>
         </Box>
       </Box>
-      <Box sx={{display:"flex"}}>
+      <Box sx={{display:{xs:"none",md:"flex"}}}>
         <input
           style={{
             padding: "10px",

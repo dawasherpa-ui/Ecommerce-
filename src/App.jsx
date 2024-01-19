@@ -6,7 +6,7 @@ import { Box } from '@mui/material'
 
 function App() {
   return (
-    <Box sx={{minHeight:"100vh",minWidth:"320px",backgroundColor:"background.paper"}}>
+    <Box sx={{minHeight:"100vh",minWidth:"320px",backgroundColor:"background.paper",color:"text.primary"}}>
       <Navbar/>
       <Main/>
       <Footer/>

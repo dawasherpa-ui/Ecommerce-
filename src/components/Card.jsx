@@ -1,13 +1,14 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import React from "react";
-import Image1 from "../assets/offer/product.jpg";
 export default function Card({ data }) {
   return (
     <div>
-      <Paper elevation={3} sx={{ p: 1, m: 1 }}>
-        <img style={{ width: "100%" }} src={Image1} alt="Card Image" />
-        <Typography variant="h5">{data.title}</Typography>
-        <Typography>{data.description}</Typography>
+      <Paper elevation={3} sx={{ p: 1, m: {xs:"5px",sm:1} }}>
+        <Box sx={{}}>
+        <img style={{ width: "100%" }} src={data.image} alt="Card Image" />
+        </Box>
+        <Typography variant="subtitle" sx={{fontSize:{sm:"16px"},fontWeight:"bold"}}>{data.title}</Typography>
+        <Typography variant="h5" sx={{fontSize:{md:"18px"}}}>Rs.20,000</Typography>
         <Box sx={{display:"flex",justifyContent:"space-around"}}>
           <Button variant="contained">Buy</Button>
           <Button variant="contained">Add to Cart</Button>

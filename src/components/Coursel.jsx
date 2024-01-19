@@ -15,7 +15,7 @@ function Coursel({component}) {
             {
                 component.map((element, i) => (
                     <Paper key={i} elevation={3} sx={{
-                        height: { xs: "150px", sm: "250px", md: "400px" }
+                        height: "32.8vw"
                     }} >
                         <img style={{height:"100%",width:"100%",objectFit:"cover",borderRadius:"5px"}}src={element} alt="offer" />
                     </Paper>
