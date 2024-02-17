@@ -24,11 +24,12 @@ const lightTheme = createTheme({
       main: '#FF6B6B', // Secondary color 2 (error/red)
     },
     background: {
-      default:'#B3B3B3' , // Background color (light gray)
-      paper: ' #F0F0F0', // Paper background (white)
+      default:'rgba(19, 19, 19, 1)' , // Background color (light gray)
+      paper: 'rgba(6, 6, 6, 1)', // Paper background (white)
     },
     text: {
-      primary: '#333333', // Text color for light theme (dark gray or black)
+      primary: 'rgba(219, 217, 217, 1)',
+      secondary:"rgba(255, 255, 255, 0.8)" // Text color for light theme (dark gray or black)
     },
   },components: {
     MuiButton: {
@@ -39,8 +40,9 @@ const lightTheme = createTheme({
             outline: 'none',
           },color:"white",
           minWidth:"auto",
+          textTransform: 'none',
           // fontWeight:"350",
-          fontSize:"16px",
+          fontSize:"14px",
           paddingInline:"1vw", 
           '@media (max-width:1200px)': {
             fontSize:"14px",
@@ -67,14 +69,14 @@ const lightTheme = createTheme({
   typography: {
     fontFamily: 'Inter,Arial, sans-serif',
     h1:{
-      color:"#333333",
+      
       fontSize:"3.8vw",
       '@media (max-width:600px)': {
         fontSize:"6vw", // Apply this color for h6 on screens wider than 600px
       },
     } // Define your preferred font
     ,h2:{
-      color:"#333333",
+      
       fontSize:"3.3vw",
       fontWeight:"450",
       '@media (max-width:600px)': {
@@ -82,28 +84,28 @@ const lightTheme = createTheme({
       },
     } // Define your preferred font
     ,h3:{
-      color:"#333333",
+      
       fontSize:"2.8vw",
       '@media (max-width:600px)': {
         fontSize:"4vw", // Apply this color for h6 on screens wider than 600px
       },
     } // Define your preferred font
     ,h4:{
-      color:"#333333",
+      
       fontSize:"2.5vw",
       '@media (max-width:600px)': {
         fontSize:"3.5vw", // Apply this color for h6 on screens wider than 600px
       },
     } // Define your preferred font
     ,h5:{
-      color:"#333333",
+      
       fontSize:"2.3vw",
       '@media (max-width:600px)': {
         fontSize:"3vw", // Apply this color for h6 on screens wider than 600px
       },
     } // Define your preferred font
     ,h6:{
-      color:"#333333",
+      
       fontSize:"1.8vw",
       '@media (max-width:600px)': {
         fontSize:"2.5vw", // Apply this color for h6 on screens wider than 600px
@@ -116,7 +118,16 @@ const lightTheme = createTheme({
         fontSize:"2.8vw",
         fontWeight:"100", // Apply this color for h6 on screens wider than 600px
       },
+    },
+    subtitle1:{
+      fontSize:"1vw",
+      fontWeight:"350",
+      '@media (max-width:600px)': {
+        fontSize:"2.8vw",
+        fontWeight:"100", // Apply this color for h6 on screens wider than 600px
+      },
     }
+    
   },
 });
 export { lightTheme };

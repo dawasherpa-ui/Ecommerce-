@@ -1,18 +1,73 @@
-import React from 'react'
-import Coursel from '../components/Coursel'
-import { Paper, Typography } from '@mui/material'
-import CardCoursel from '../components/CardCoursel'
-import Table from '../components/Table'
+import { Box, FormControl, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material'
+import React, { useState, useEffect, useMemo } from 'react'
+import Lottie from 'lottie-react'
+import animatejson from '../assets/svg/Animation - 1705801797085 (1).json'
+import SearchIcon from '@mui/icons-material/Search';
+function Home() {
+  const [showPassword, setShowPassword] = React.useState(false);
 
-export default function Home() {
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  const messages = useMemo(() =>  [
+    'Smartphone Pro',
+    'Wireless Headphones',
+    'Ultra HD Smart TV',
+    'Fitness Tracker',
+    'Gaming Laptop'
+  ], []);
+
+const [messageIndex, setMessageIndex] = useState(0);
+const [text, setText] = useState('');
+const delay = 200; // Time delay between each character (in milliseconds)
+
+useEffect(() => {
+    let currentIndex = 0;
+    const timer = setInterval(() => {
+        if (currentIndex < messages[messageIndex].length) {
+            setText(messages[messageIndex].substring(0, currentIndex + 1));
+            currentIndex++;
+        } else {
+            clearInterval(timer);
+            setTimeout(() => {
+                // Start typing the next message after a delay
+                setMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
+                setText('');
+            }, 3000); // Delay before typing the next message
+        }
+    }, delay);
+
+    return () => {
+        clearInterval(timer);
+    };
+}, [messageIndex, messages]);
   return (
-    <div>
-      <Coursel component={["https://www.digiantmedia.com/wp-content/uploads/2020/08/ecommerce-website-development-offer.jpg","https://cf.shopee.com.my/file/0bbfbf1471a624dc05913877250fd94e","https://th.bing.com/th/id/R.a3a354e927de17b8e4a936fda96a2898?rik=vLXMrvodUatOpw&riu=http%3a%2f%2fwww.qaadar.com%2fpublic%2fuploads%2fall%2f9EsBZkYAFcHgCuQ4YllBTWjuMTZBtn38AkDz7R67.jpg&ehk=Q21lXlxhY4ywUdBTNry3WsaEQmoka7euqy2xJntt0js%3d&risl=&pid=ImgRaw&r=0","https://dtbtob4osa700.cloudfront.net/MallImages/04052023152223259_mallban.jpg"]}/>
-      <Paper elevation={8} sx={{p:{xs:1,sm:2},my:1,bgcolor:"#FF5252"}}>
-        <Typography variant='h2'>Hot Product</Typography>
-      <CardCoursel datas={["1","2","3","4","5","6","7","8","9","10"]} />
-      </Paper>
-      <Table/>
-    </div>
+    <Box sx={{height:"80vh",display:"grid",placeItems:"center"}}>
+      <Box sx={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+      <FormControl sx={{maxWidth:"450px",minWidth:"150px", m: 1,color:"white" }} variant="standard">
+          <Input
+            type='text'
+            sx={{fontSize:{xs:"18px",sm:"28px"},"&:after":{border:"1px solid rgba(0, 50, 255, 0.8)"},"&:before":{borderBottom:"1px solid white"}}}
+            placeholder={text}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  <SearchIcon sx={{fontSize:{xs:"28px",sm:"32px"},color:"white"}}/>
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <Lottie animationData={animatejson} style={{width:"80%"}}/>
+      </Box>
+    </Box>
   )
 }
+
+export default Home

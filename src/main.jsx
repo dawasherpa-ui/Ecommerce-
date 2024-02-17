@@ -5,14 +5,17 @@ import './index.css'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { lightTheme } from '../Theme.jsx'
 import { BrowserRouter } from 'react-router-dom'
+import Store from './context/Store.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <Store>
     <BrowserRouter>
     <ThemeProvider theme={lightTheme}>
     <CssBaseline/>
     <App />
     </ThemeProvider>
     </BrowserRouter>
+    </Store>
   </React.StrictMode>,
 )
