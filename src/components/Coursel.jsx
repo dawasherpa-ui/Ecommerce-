@@ -17,7 +17,7 @@ function Coursel({component}) {
                     <Paper key={i} elevation={3} sx={{
                         height: "32.8vw"
                     }} >
-                        <img style={{height:"100%",width:"100%",objectFit:"cover",borderRadius:"5px"}}src={element} alt="offer" />
+                        <img style={{height:"100%",width:"100%",objectFit:"cover",borderRadius:"5px",border:"1px solid #30353c"}}src={element} alt="offer" />
                     </Paper>
                 ))
             }

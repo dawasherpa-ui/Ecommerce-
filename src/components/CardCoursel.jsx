@@ -8,11 +8,11 @@ const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
-    items: 5,
+    items: 6,
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 4,
+    items: 5,
   },
   tablet: {
     breakpoint: { max: 1024, min: 600 },
@@ -24,17 +24,12 @@ const responsive = {
   },
 };
 function CardCoursel({ datas }) {
-  const cardData = {
-    title: "Product",
-    description: "Premium IPhone15+...",
-    image: "https://source.unsplash.com/random/?Iphone/",
-  };
   return (
     <Box>
       <Carousel responsive={responsive}>
-        {datas.map((e) => (
-          <Box key={e}>
-            <Card data={cardData} />
+        {datas.map((e,i) => (
+          <Box key={i} sx={{mx:1}}>
+            <Card data={e} />
           </Box>
         ))}
       </Carousel>

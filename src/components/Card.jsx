@@ -1,61 +1,39 @@
-import { Alert, Box, Paper, Snackbar, Typography } from "@mui/material";
+import {  Box, Paper,  Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 export default function Card({ data }) {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
   return (
     <div>
       <Paper
         elevation={3}
-        sx={{ p: 1, m: { xs: "5px", sm: 1 }, bgcolor: "background.default" }}
+        sx={{ bgcolor: "background.default" }}
       >
-        <Link to="/shop/123" style={{ textDecoration: "none" }}>
-          <Box sx={{ color: "text.primary" }}>
+        <Link to={`/shop/${data._id}`} style={{ textDecoration: "none" }}>
             <Box
               sx={{
                 height: { xs: "30vw", sm: "25vw", md: "19vw" },
               }}
             >
               <img
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                src={data.image}
-                alt="Card Image"
+                style={{ width: "100%", height: "100%", objectFit: "cover",borderRadius:"4px 4px 0px 0px" }}
+                src={`https://ldgnpdudaohjifgktmst.supabase.co/storage/v1/object/public/ruza/${data._id}`}
+                alt={`Image of ${data.name}`}
               />
             </Box>
+            <Box sx={{px:1,pb:1, color: "text.primary" }}>
             <Typography
               variant="subtitle"
-              sx={{ fontSize: { sm: "16px" }, fontWeight: "bold" }}
+              sx={{ fontSize: { sm: "16px" }, fontWeight: "bold",textTransform:"capitalize" }}
             >
-              {data.title}
+              {data.name.slice(0,12)}...
             </Typography>
             <Typography variant="h5" sx={{ fontSize: { md: "18px" } }}>
-              Rs.20,000
+              ${data.price}
             </Typography>
+       <Typography variant="h6" sx={{ fontSize: { md: "16px" } ,color:"text.primary"}}>See more...</Typography>
           </Box>
         </Link>
-       <Typography variant="h6" sx={{ fontSize: { md: "16px" } }}>See more..</Typography>
       </Paper>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity="success"
-          variant="filled"
-        >
-          Added To Cart
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

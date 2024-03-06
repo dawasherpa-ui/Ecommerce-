@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
   Drawer,
+  FormControl,
   IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
   List,
   ListItem,
   ListItemButton,
@@ -14,24 +18,64 @@ import Logo from "../assets/logo.jpg";
 import HomeIcon from "@mui/icons-material/Home";
 import StoreIcon from "@mui/icons-material/Store";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import WidgetsIcon from "@mui/icons-material/Widgets";
-import { Link, useLocation } from "react-router-dom";
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { CartContext } from "../context/Store";
+import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 export default function Navbar() {
-  const [catOpen, setCatOpen] = useState(false);
-  const [symbol, setSymbol] = useState(false);
   const [open, setOpen] = useState(false);
-  const cateArray=["Bag","Clothes","Cosmetic","Beeds","Necklace"]
-  const productArray=["Product1","Product2","Product3","Product4","Product5","Product6"]
-  const changeProduct=(e)=>{
-    setSymbol(e)
-  }
+  const {user,logoutUser,setSnackMessage}=useContext(CartContext)
+  const [search, setSearch] = useState('');
+  const [show, setShow] = useState(null);
+  const [datas, setDatas] = useState([]);
+  const [controller, setController] = useState(null);
+  const navigate=useNavigate()
   const location=useLocation();
   const handleOpen=()=>{
     setOpen(!open)
   }
   const handleClose=()=>{
     setOpen(false)
+  }
+  
+  const handleSearch = async () => {
+    if (controller) {
+      controller.abort(); // Abort previous request if exists
+    }
+
+    const newController = new AbortController();
+    setController(newController);
+
+    try {
+      const response = await fetch(`https://ecommerce-backend-9354.onrender.com/api/product/search?name=${search}&page=1&limit=30`, {
+        method: "GET",
+        signal: newController.signal
+      });
+
+      const data = await response.json();
+      if (data?.search !== 0) {
+        setDatas(data.user);
+        console.log(data.user);
+      }
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        console.log('Previous request aborted');
+      } else {
+        console.log('Error fetching data:', err);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (search.length > 1) {
+      handleSearch();
+    }
+  }, [search]);
+
+  const searchClick=()=>{    
+    setShow(false)
+    navigate(`/search/${search}`)  
   }
   return (
     <Box
@@ -44,7 +88,7 @@ export default function Navbar() {
         top:"0px",
         zIndex:"9999",
         justifyContent: "space-between",
-        bgcolor: "rgba(6, 6, 6, 0.9)",
+        bgcolor: "background.paper",
         px: 4,
       }}
     >
@@ -63,7 +107,7 @@ export default function Navbar() {
             style={{
               height: "100%",
               borderRadius: "50% 50% 46% 54% / 62% 58% 42% 38% ",
-              border: "2px solid gray",
+              border: "1px solid white",
             }}
             alt="RuzaBelle"
           /></Link>
@@ -95,103 +139,58 @@ export default function Navbar() {
               </Link>
             </ListItem>
             <ListItem sx={{ p: 0 }}>
-              <Box sx={{ position: "relative" }}>
-                <ListItemButton
-                  onMouseEnter={() => {
-                    setCatOpen(true);
-                  }}
-                  onMouseLeave={() => {
-                    setCatOpen(false);
-                  }}
-                >
-                  <WidgetsIcon sx={{ fontSize: "20px" }} />
-                  Categories
-                </ListItemButton>
-                <Box
-                  sx={{ position: "absolute", width: "auto"  ,zIndex:"99"}}
-                  onMouseEnter={() => {
-                    setCatOpen(true);
-                  }}
-                  onMouseLeave={() => {
-                    setCatOpen(false);
-                  }}
-                >
-                  {catOpen && (
-                    <Paper
-                      sx={{
-                        bgcolor: "background.paper",
-                        border: "1px solid #cfd1d6",
-                        width: "350px",
-                        height: "auto",
-                        display: "grid",
-                        zIndex:"99",
-                        gridTemplateColumns: "2fr 3fr",
-                        p: 1,
-                        gap: "10px",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          borderRight: "1px solid #cfd1d6",
-                        }}
-                      >
-                        <List>
-                         {cateArray.map((e,i)=>
-                         <Box key={i}>
-                          <ListItem key={i}
-                           onMouseEnter={()=>changeProduct(i)}
-                           >
-                            {e} 
-                            {symbol===i?">":null}
-                            </ListItem>
-                            </Box>
-                         )}
-                        </List>
-                      </Box>
-                      <Box sx={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gridTemplateRows:"repeat(5,1fr)"}}>
-                        <Box>Product</Box>
-                        <Box>Product</Box>
-                        <Box>Product</Box>
-                        <Box>Product</Box>
-                        <Box>Product</Box>
-                      </Box>
-                    </Paper>
-                  )}
-                </Box>
-              </Box>
+            <Link style={{color:"white",textDecoration:"none"}} to="/publish">
+              <ListItemButton>
+                <PostAddIcon sx={{ fontSize: "20px" }} />
+                Publish
+              </ListItemButton>
+              </Link>
             </ListItem>
           </List>
         </Box>
       </Box>
-
      <Box sx={{display:"flex",gap:{xs:"0px",sm:"10px"},alignItems:"center"}}>
      {location.pathname=="/"?null:
-     <Box sx={{minWidth:"100px",maxWidth:"300px"}}>
-      <input
-          style={{
-            paddingBlock: "5px",
-            paddingInline: "10px",
-            fontSize:"15px",
-            borderRadius: "4px",
-            border: "1px solid #cfd1d6",
-            width:"100%"
-          }}
-          placeholder="Search"
+     <FormControl sx={{position:"relative",minWidth:"100px",maxWidth:"300px"}}>
+       <InputLabel htmlFor="standard-adornment-password">Search</InputLabel>
+      <Input
+         sx={{height:"30px",fontSize:{xs:"3.5vw",sm:"17px",md:"18px",lg:"20px"}, "&:before": { borderBottom: "1px solid white" }}}
+         onChange={(e) => { setSearch(e.target.value.toLowerCase()) }}
+         onClick={() => { setShow(true) }}
+         onBlur={() => { setShow(false) }}
+         value={search}
+          endAdornment={<InputAdornment position="end">
+           <IconButton onClick={(e) => { search.length>3?(e.stopPropagation(),searchClick()):null }}>
+            <SearchIcon sx={{color:"text.primary"}}/>
+          </IconButton>
+        </InputAdornment>}
         />
-        </Box>}
+         {show ?
+            <Box sx={{ position: "absolute", zIndex: "99", top: "100%", backdropFilter: "blur(5px)", bgcolor: "rgba(0, 0, 0, 0.54)", px: 1, pb: 2, pt: 0, width: "100%" }}>
+              <List sx={{ p: 0 }}>
+                {search.length === 0 ? "Search to purchase" : datas.length > 0 ? datas.map((e, i) => 
+                <Link to={`/shop/${e._id}`} key={i} style={{textDecoration:"none",}}   onClick={() => setShow(false)}>
+                <ListItem sx={{ p: 0, pt: 1, textTransform: "capitalize",color:"text.primary" }}onMouseDown={(e) => e.preventDefault()}>
+                  {e.name}
+                </ListItem>
+                </Link>
+                ) : "Search not found"}
+              </List>
+            </Box> : null}
+        </FormControl>}
          <Box sx={{display:{xs:"initial",md:"none"}}}>
             <IconButton sx={{color:"white"}} onClick={handleOpen}>
             <MenuIcon/>
             </IconButton>
           </Box>
         <Box>
-          <Link to="/login"><Button sx={{fontSize:{xs:"16px",sm:"18px"},"&:hover":{backgroundColor:"transparent",textDecoration:"underline"}}}>SignIn</Button></Link>
-        </Box>
+          {user?<Button variant="contained" onClick={()=>{logoutUser();setSnackMessage("logOut")}} >LogOut</Button>:
+          <Link to="/login" style={{textDecoration:"none"}}><Button variant="contained">SignIn</Button></Link>
+        }
+          </Box>
       </Box>
-      <Drawer open={open} onClose={handleClose}>
-        <Box sx={{width:"40vw",marginTop:{xs:"70px",sm:"70px",md:"80px"},color:"text.primary"}}>
+      <Drawer open={open}  onClose={handleClose}>
+        <Box sx={{width:"40vw",marginTop:{xs:"70px",sm:"70px",md:"80px"},height:"100%",color:"text.primary",bgcolor:"background.default"}}>
           <List>
           <ListItem sx={{ p: 0 }}>
             <Link style={{color:"white",textDecoration:"none"}} to="/">
@@ -214,6 +213,14 @@ export default function Navbar() {
               <ListItemButton onClick={handleClose}>
                 <ShoppingCartIcon sx={{ fontSize: "20px" }} />
                 Cart
+              </ListItemButton>
+              </Link>
+            </ListItem>
+            <ListItem sx={{ p: 0 }}>
+            <Link style={{color:"white",textDecoration:"none"}} to="/publish">
+              <ListItemButton onClick={handleClose}>
+                <PostAddIcon sx={{ fontSize: "20px" }} />
+                Publish
               </ListItemButton>
               </Link>
             </ListItem>

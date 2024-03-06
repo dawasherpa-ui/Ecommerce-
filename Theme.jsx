@@ -14,7 +14,7 @@ const lightTheme = createTheme({
   breakpoints: customBreakpoints,
   palette: {
     primary: {
-      main: '#0077B6', // Primary color
+      main: '#F59115', // Primary color
     },
     secondary: {
       main: '#00A699', // Secondary color 1
@@ -24,8 +24,8 @@ const lightTheme = createTheme({
       main: '#FF6B6B', // Secondary color 2 (error/red)
     },
     background: {
-      default:'rgba(19, 19, 19, 1)' , // Background color (light gray)
-      paper: 'rgba(6, 6, 6, 1)', // Paper background (white)
+      default:'#1D1D1D' , // Background color (light gray)
+      paper: '#111315', // Paper background (white)
     },
     text: {
       primary: 'rgba(219, 217, 217, 1)',
@@ -40,6 +40,7 @@ const lightTheme = createTheme({
             outline: 'none',
           },color:"white",
           minWidth:"auto",
+          textDecoration:"none",
           textTransform: 'none',
           // fontWeight:"350",
           fontSize:"14px",
@@ -56,7 +57,7 @@ const lightTheme = createTheme({
             paddingBlock:"2px" // Apply this color for h6 on screens wider than 600px
           },
           '@media (max-width:600px)': {
-            fontSize:"2.5vw",
+            fontSize:"2.8vw",
             // fontSize:"2vw",
             paddingInline:"2vw",
             paddingBlock:"2px" // Apply this color for h6 on screens wider than 600px
@@ -67,7 +68,7 @@ const lightTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Inter,Arial, sans-serif',
+    fontFamily: 'Lato,Arial, sans-serif',
     h1:{
       
       fontSize:"3.8vw",

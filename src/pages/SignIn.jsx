@@ -1,12 +1,15 @@
-import { Box, Button, FormControl, Typography } from '@mui/material'
+import { Alert, Box, Button, FormControl, Snackbar, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 function SignIn() {
   const [fName, setFName] = useState('')
   const [lName, setLName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [open, setOpen] = useState(false);
+  const navigate=useNavigate()
   const createUser = async () => {
-    const response = await fetch('http://localhost:3000/api/user/', {
+    const response = await fetch('https://ecommerce-backend-9354.onrender.com/api/user/', {
       method: 'POST', headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         fname: `${fName}`,
         lname: `${lName}`,
@@ -15,12 +18,24 @@ function SignIn() {
       })
     })
     const data = await response.json()
-    console.log(data)
+    if(data.message=="Create User"){
+      handleClick()
+      // navigate("/login")
+    }
   }
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     await createUser()
-    console.log("Submitted")
   }
   return (
     <Box sx={{ display: "grid", height: "80vh", placeItems: "center" }}>
@@ -36,28 +51,32 @@ function SignIn() {
               <Typography
                 component="label"
                 htmlFor="fname"
-                variant="subtitle"
+                variant="h4"
+                sx={{fontSize:{xs:"13px",sm:"16px",md:"18px"},textAlign:"end"}}
               >
                 FirstName{" "}
               </Typography>
               <Typography
                 component="label"
                 htmlFor="lname"
-                variant="subtitle"
+                variant="h4"
+                sx={{fontSize:{xs:"13px",sm:"16px",md:"18px"},textAlign:"end"}}
               >
                 LastName{" "}
               </Typography>
               <Typography
                 component="label"
                 htmlFor="email"
-                variant="subtitle"
+                variant="h4"
+                sx={{fontSize:{xs:"13px",sm:"16px",md:"18px"},textAlign:"end"}}
               >
                 Email{" "}
               </Typography>
               <Typography
                 component="label"
                 htmlFor="password"
-                variant="subtitle"
+                variant="h4"
+                sx={{fontSize:{xs:"13px",sm:"16px",md:"18px"},textAlign:"end"}}
               >
                 Password{" "}
               </Typography>
@@ -130,6 +149,16 @@ function SignIn() {
             </Box>
             <Box sx={{ gridColumn: "1/3",display:"grid",placeItems:"end" }}><Button variant="contained" type="submit">SignIn</Button></Box>
           </FormControl>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            Added To Cart
+          </Alert>
+        </Snackbar>
         </Box>
       </Box>
     </Box>
